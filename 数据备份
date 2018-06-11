@@ -1,0 +1,27 @@
+使用xtrabackup 工具 
+
+以下是旧服务器
+全备:
+    # /usr/local/xtrabackup/bin/innobackupex --defaults-files=/etc/my.cnf --user=root --password=123456 --no-timestamp /home/fengpj/mysqldata
+压缩文件
+    # tar -zcvf mysqldata.tar.gz mysqldata/
+传输到新服务器
+    # scp -P 6322 mysqldata.tar.gz fengpj@'192.168.2.101':/home/fengpj
+
+新服务器操作
+  1 停止mysql服务
+  2 备份mysql 的datadir目录
+    # cd /opt/server/mysql
+    # mv data data_bak
+    # mkdir data
+  3 解压数据文件
+    # tar -zxvf mysqldata.tar.gz
+  4 应用日志
+    # /usr/local/xtrabackup/bin/innobackupex --user=root --password=king123* --default-files=/etc/my/cnf --apply-log /home/fengpj/mysqldata
+  5 恢复数据
+    #/usr/local/xtrabackup/bin/innobackupex --user=root --password=king123* --default-files=/etc/my/cnf --copy-back /home/fengpj/mysqldata
+  6 修改mysql datadir目录权限
+    # chown -R mysql:mysql /opt/server/mysql/data
+  7 启动数据库
+    # /etc/init.d/mysqld
+  备份完成
