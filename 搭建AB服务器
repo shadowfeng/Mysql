@@ -1,0 +1,22 @@
+主服务器:
+  第一步，主服务器创建用户并清空日志。
+  # grant replication client,replication slave on *.* to 'sslave'@'192.168.1.2' identified by 'sslave';
+  # reset master;
+从服务器:
+  第二步，修改从服务器的server-id(使用服务器IP地址末8位)
+  #vim /etc/my.cnf
+  server-id = 17018
+  第三步，从服务器清空日志。
+  # reset slave;
+  查看从服务器当前状态(后续作比较)
+  # show slave status;
+  第四步，从服务器通过change master to命令修改设置。
+  mysql> change master to master_host='192.168.1.2',master_port=3306,master_user='sslave',master_password='sslave',master_log_file='mysql-bin.000286',master_log_pos=726107404;
+  第五步，开启slave。
+  mysql> show slave status \G;
+        此刻Slave_IO_State为空,Slave_IO_Running:No ,Slave_SQL_Running: No
+  mysql> start slave
+  第六步，从服务器查看是否和主服务器通信成功。如果出现 Slave_IO_Running和Slave_SQL_Running都是yes，则证明配置成功。
+  
+       
+  
