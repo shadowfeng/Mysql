@@ -1,6 +1,6 @@
 1 停止主动服务器上的写入
-2 在主动服务器上执行 SET GOLBAL READ_ONLY=1,同时也在配置文件中设置只读read_only,防止重启失效，但不会组织拥有超级权限的用户更改数据，如果想阻止所有人更改数据，可以执行FLUSH TABLES WHIE READ LOCK.如果你没有这么做，你必须kill掉所有客户端连接以保证没有长时间运行的语句或者未提交的事务
+2 在主动服务器上执行 SET GOLBAL READ_ONLY=1,同时也在配置文件中设置只读read_only,防止重启失效，但不会组织拥有超级权限的用户更改数据，如果想阻止所有人更改数据，可以执行FLUSH TABLES WHIE READ LOCK（unlock tables）.如果你没有这么做，你必须kill掉所有客户端连接以保证没有长时间运行的语句或者未提交的事务
 3 在主动服务器上执行SHOW MASTER LOGS 并记录二进制日志坐标
-4 使用主动服务器上的二进制日志坐标再被动服务器上执行SELECT MASTER_POS_WAIT().该语句将阻塞住，知道写入新的主动服务器中
+4 使用主动服务器上的二进制日志坐标再被动服务器上执行SELECT MASTER_POS_WAIT(file, pos[, timeout]).该语句将阻塞住，知道写入新的主动服务器中
 5 在被动服务器上执行SET GLOBAL read_only=0,这样就变换成主动服务器
 6 修改应用的配置，使其写入新的主动服务器中
