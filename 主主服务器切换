@@ -1,0 +1,2 @@
+1 停止主动服务器上的写入
+2 在主动服务器上执行 SET GOLBAL READ_ONLY=1,同时也在配置文件中设置只读read_only
