@@ -1,3 +1,9 @@
+主主迁移步骤
+首先需要给用户授权
+# GRANT ALL PRIVILEGES ON database.table TO 'yunpai'@'192.168.1.1';
+刷新权限
+# flush privileges; 
+
 1 停止主动服务器上的写入
 2 在主动服务器上执行 SET GOLBAL READ_ONLY=1,同时也在配置文件中设置只读read_only,防止重启失效，但不会组织拥有超级权限的用户更改数据，如果想阻止所有人更改数据，可以执行FLUSH TABLES WHIE READ LOCK（unlock tables）.如果你没有这么做，你必须kill掉所有客户端连接以保证没有长时间运行的语句或者未提交的事务
 3 在主动服务器上执行SHOW MASTER LOGS 并记录二进制日志坐标
